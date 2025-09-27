@@ -23,7 +23,7 @@ const ColumnAlternatif = ({ onSave }) => [
   {
     accessorKey: "No",
     header: () => <div className="">No</div>,
-    cell: ({ row }) => <div className=" text-xs ">{row.index + 1}</div>,
+    cell: ({ row }) => <div className=" text-xs w-[50px]">{row.index + 1}</div>,
   },
   {
     accessorKey: "kode_alternatif",
@@ -43,7 +43,7 @@ const ColumnAlternatif = ({ onSave }) => [
 
     cell: ({ row }) => {
       return (
-        <div className=" text-xs w-full max-w-[650px]">
+        <div className=" text-xs max-w-[650px]">
           {row.getValue("pupuk")}
         </div>
       );
@@ -56,7 +56,7 @@ const ColumnAlternatif = ({ onSave }) => [
 
     cell: ({ row }) => {
       return (
-        <div className=" text-xs w-full max-w-[650px]">
+        <div className=" text-xs w-full max-w-[650px] text-wrap">
           {row.getValue("deskripsi")}
         </div>
       );

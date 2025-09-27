@@ -18,8 +18,9 @@ import {
   UserCircleIcon,
 } from "../icons/index";
 import { LuListChecks } from "react-icons/lu";
-import { HiOutlineSquare3Stack3D, HiOutlineCalculator  } from "react-icons/hi2";
+import { HiOutlineSquare3Stack3D, HiOutlineCalculator, HiOutlineScale   } from "react-icons/hi2";
 import SidebarWidget from "./SidebarWidget";
+import { Leaf } from "lucide-react";
 
 type NavItem = {
   name: string;
@@ -32,7 +33,7 @@ const navItems: NavItem[] = [
   {
     icon: <GridIcon />,
     name: "Dashboard",
-    path: "/",
+    path: "/admin/dashboard",
   },
   {
     icon: <HiOutlineCalculator  className="w-5 h-5"/>,
@@ -87,10 +88,32 @@ const othersItems: NavItem[] = [
     name: "Kelola Alternatif",
     path: "/admin/alternatif",
   },
+  // {
+  //   icon: <LuListChecks className="w-5 h-5"/>,
+  //   name: "Kelola Criteria",
+  //   path: "/admin/criteria",
+  // },
   {
-    icon: <LuListChecks className="w-5 h-5"/>,
-    name: "Kelola Criteria",
-    path: "/admin/criteria",
+    icon: <BoxCubeIcon />,
+    name: "Kelola Kriteria",
+    subItems: [
+      { name: "Kriteria", path: "/admin/criteria", pro: false },
+      { name: "Subkriteria", path: "/admin/subkriteria", pro: false },
+     
+    ],
+  },
+  // {
+  //   icon: <HiOutlineSquare3Stack3D className="w-5 h-5"/>,
+  //   name: "Perbandingan Kriteria",
+  //   path: "/admin/perbandingan-kriteria",
+  // },
+   {
+    icon: <BoxCubeIcon />,
+    name: "Perbandingan",
+    subItems: [
+      { name: "Perbandangan Kriteria", path: "/admin/perbandingan-kriteria", pro: false },
+      { name: "Perbandangan Alternatif", path: "/admin/perbandingan-alternatif", pro: false },
+    ],
   },
   {
     icon: <BoxCubeIcon />,
@@ -130,7 +153,7 @@ const AppSidebar: React.FC = () => {
               onClick={() => handleSubmenuToggle(index, menuType)}
               className={`menu-item group  ${
                 openSubmenu?.type === menuType && openSubmenu?.index === index
-                  ? "menu-item-active"
+                  ? "menu-item-active "
                   : "menu-item-inactive"
               } cursor-pointer ${
                 !isExpanded && !isHovered
@@ -331,13 +354,15 @@ const AppSidebar: React.FC = () => {
         <Link href="/">
           {isExpanded || isHovered || isMobileOpen ? (
             <>
-              <Image
-                className="dark:hidden"
-                src="/images/logo/logo.svg"
-                alt="Logo"
-                width={150}
-                height={40}
-              />
+            <div className="flex items-center space-x-3">
+            <div className="bg-gradient-to-r from-green-600 to-emerald-600 p-2 rounded-xl">
+              <Leaf className="h-8 w-8 text-white" />
+            </div>
+            <div>
+              <h1 className="text-xl font-bold text-gray-900">EcoDesa</h1>
+              <p className="text-sm text-gray-600">Desa Sidomukti</p>
+            </div>
+          </div>
               <Image
                 className="hidden dark:block"
                 src="/images/logo/logo-dark.svg"
@@ -347,12 +372,12 @@ const AppSidebar: React.FC = () => {
               />
             </>
           ) : (
-            <Image
-              src="/images/logo/logo-icon.svg"
-              alt="Logo"
-              width={32}
-              height={32}
-            />
+             <div className="flex items-center space-x-3">
+            <div className="bg-gradient-to-r from-green-600 to-emerald-600 p-2 rounded-xl">
+              <Leaf className="h-8 w-8 text-white" />
+            </div>
+            
+          </div>
           )}
         </Link>
       </div>

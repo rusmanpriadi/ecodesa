@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff, Mail, Lock, User, Shield, Sparkles, X } from 'lucide-react';
+import { successToast } from "@/lib/toastUtils";
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 
 const LoginButton = ({ isLoginOpen, setIsLoginOpen, isRegisterOpen, setIsRegisterOpen }) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -12,6 +15,8 @@ const LoginButton = ({ isLoginOpen, setIsLoginOpen, isRegisterOpen, setIsRegiste
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
+   const router = useRouter();
+
   // Determine current mode
   const isLogin = isLoginOpen && !isRegisterOpen;
   const isRegister = isRegisterOpen && !isLoginOpen;
@@ -20,7 +25,7 @@ const LoginButton = ({ isLoginOpen, setIsLoginOpen, isRegisterOpen, setIsRegiste
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: value || ''
     }));
     // Clear error when user starts typing
     if (errors[name]) {
@@ -34,8 +39,9 @@ const LoginButton = ({ isLoginOpen, setIsLoginOpen, isRegisterOpen, setIsRegiste
   const validateForm = () => {
     const newErrors = {};
     
+   
     if (isRegister && !formData.name.trim()) {
-      newErrors.name = 'Nama harus diisi';
+      newErrors.nama = 'Nama harus diisi';
     }
     
     if (!formData.email.trim()) {
@@ -83,14 +89,65 @@ const LoginButton = ({ isLoginOpen, setIsLoginOpen, isRegisterOpen, setIsRegiste
       
       const data = await response.json();
       
-      if (response.ok) {
-        alert(`${isLogin ? 'Login' : 'Registrasi'} berhasil!`);
-        // Reset form and close modal
-        resetForm();
-        closeModal();
-      } else {
-        setErrors({ submit: data.message || 'Terjadi kesalahan' });
-      }
+     if (response.ok) {
+  if (isLogin) {
+    console.log('Login successful:', data);
+    const token = data.data.token;
+    const level = data.data.user.level;
+    const userId = data.data.user.id;
+
+    if (!token) {
+          throw new Error("Token tidak ditemukan dalam respons API.");
+        }
+    Cookies.set("token", token, {
+    expires: 1,
+    path: "/",
+    sameSite: "Lax",
+    secure: true,
+});
+
+Cookies.set("level", level, {
+  expires: 1,
+  path: "/",
+  sameSite: "Lax",
+  secure: process.env.NODE_ENV === "production",
+});
+
+Cookies.set("id", userId, {
+  expires: 1,
+  path: "/",
+  sameSite: "Lax",
+  secure: process.env.NODE_ENV === "production",
+});
+
+
+    successToast("Login berhasil!", {
+      description: "Selamat datang kembali",
+      duration: 4000,
+    });
+    
+    if(level === 'admin') {
+            console.log("Level:", level);
+          router.push('/admin/dashboard');
+        } else if (level === 'petani') {
+            router.push('/petani/dashboard');
+        } else {
+            router.push('/');
+        }
+
+    resetForm();
+    closeModal(); // kalau login berhasil, langsung tutup modal
+  } else {
+    successToast("Registrasi berhasil!", {
+      description: "Silakan login dengan akun baru.",
+      duration: 4000,
+    });
+    resetForm();
+    // Jangan close semua, tapi buka modal login
+    setIsRegisterOpen(false);
+    setIsLoginOpen(true);
+  }
+}
     } catch (error) {
       setErrors({ submit: 'Koneksi bermasalah. Coba lagi.' });
     } finally {
@@ -200,7 +257,6 @@ const LoginButton = ({ isLoginOpen, setIsLoginOpen, isRegisterOpen, setIsRegiste
                     name="name"
                     value={formData.name}
                     onChange={handleInputChange}
-                    onKeyPress={handleKeyPress}
                     className={`w-full pl-5 pr-4 py-3 border rounded-xl transition-all duration-200 bg-white/50 backdrop-blur-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent ${
                       errors.name ? 'border-red-300' : 'border-gray-200 hover:border-green-300'
                     }`}
@@ -214,7 +270,7 @@ const LoginButton = ({ isLoginOpen, setIsLoginOpen, isRegisterOpen, setIsRegiste
             {/* Email Field */}
             <div className="space-y-2">
               <label className="text-sm font-medium text-gray-700">
-                Email atau NIK
+                Email 
               </label>
               <div className="relative">
                
@@ -223,11 +279,11 @@ const LoginButton = ({ isLoginOpen, setIsLoginOpen, isRegisterOpen, setIsRegiste
                   name="email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  onKeyPress={handleKeyPress}
+                 
                   className={`w-full pl-5 pr-4 py-3 border rounded-xl transition-all duration-200 bg-white/50 backdrop-blur-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent ${
                     errors.email ? 'border-red-300' : 'border-gray-200 hover:border-green-300'
                   }`}
-                  placeholder="Masukkan email atau NIK"
+                  placeholder="Masukkan email"
                 />
               </div>
               {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
@@ -275,7 +331,7 @@ const LoginButton = ({ isLoginOpen, setIsLoginOpen, isRegisterOpen, setIsRegiste
                     name="confirmPassword"
                     value={formData.confirmPassword}
                     onChange={handleInputChange}
-                    onKeyPress={handleKeyPress}
+                   
                     className={`w-full pl-5 pr-4 py-3 border rounded-xl transition-all duration-200 bg-white/50 backdrop-blur-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent ${
                       errors.confirmPassword ? 'border-red-300' : 'border-gray-200 hover:border-green-300'
                     }`}

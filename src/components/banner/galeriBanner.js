@@ -50,7 +50,7 @@ const GaleriBanner = () => {
     fetchGaleriItems();
   }, []);
   
-  console.log(galeriItems);
+
 
   return (
     <section id="galeri" className="py-20 bg-gradient-to-br from-green-50 to-emerald-50">
