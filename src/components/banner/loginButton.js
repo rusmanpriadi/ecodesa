@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff, Mail, Lock, User, Shield, Sparkles, X } from 'lucide-react';
-import { successToast } from "@/lib/toastUtils";
+import { errorToast, successToast } from "@/lib/toastUtils";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 
@@ -88,10 +88,26 @@ const LoginButton = ({ isLoginOpen, setIsLoginOpen, isRegisterOpen, setIsRegiste
       });
       
       const data = await response.json();
-      
-     if (response.ok) {
-  if (isLogin) {
-    console.log('Login successful:', data);
+
+  if (response.status === 201) {
+    // ✅ tampilkan pesan error dari backend langsung ke user
+    setErrors({ submit: data.message || "Terjadi kesalahan. Coba lagi." });
+
+    // Optional: tampilkan toast biar lebih user friendly
+    errorToast("Login gagal", {
+      description: data.message,
+      duration: 4000,
+    });
+  } else if(response.status === 202) {
+     setErrors({ submit: data.message || "Terjadi kesalahan. Coba lagi." });
+
+    // Optional: tampilkan toast biar lebih user friendly
+    errorToast("Password anda salah", {
+      description: data.message,
+      duration: 4000,
+    });
+  } else if (response.status === 200) {
+       if (isLogin) {
     const token = data.data.token;
     const level = data.data.user.level;
     const userId = data.data.user.id;
@@ -127,7 +143,7 @@ Cookies.set("id", userId, {
     });
     
     if(level === 'admin') {
-            console.log("Level:", level);
+           
           router.push('/admin/dashboard');
         } else if (level === 'petani') {
             router.push('/petani/dashboard');

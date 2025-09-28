@@ -115,6 +115,15 @@ const othersItems: NavItem[] = [
       { name: "Perbandangan Alternatif", path: "/admin/perbandingan-alternatif", pro: false },
     ],
   },
+   {
+    icon: <BoxCubeIcon />,
+    name: "Perhitungan AHP",
+    subItems: [
+      { name: "Bobot Prioritas Kriteria", path: "/admin/prioritas-kriteria", pro: false },
+      { name: "Bobot Prioritas Alternatif", path: "/admin/prioritas-alternatif", pro: false },
+      { name: "Skor Akhir", path: "/admin/skor-akhir", pro: false },
+    ],
+  },
   {
     icon: <BoxCubeIcon />,
     name: "Landing Page",

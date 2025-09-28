@@ -41,7 +41,7 @@ export async function POST(req) {
     if (rows.length === 0) {
       return NextResponse.json(
         { message: "User tidak ditemukan" },
-        { status: 404 }
+        { status: 201 }
       );
     }
 
@@ -52,7 +52,7 @@ export async function POST(req) {
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
-      return NextResponse.json({ message: "Password salah" }, { status: 401 });
+      return NextResponse.json({ message: "Silahkan masukkan password yang benar" }, { status: 202 });
     }
 
     // Buat JWT token
@@ -66,7 +66,7 @@ export async function POST(req) {
       user.id,
     ]);
     const res = NextResponse.json({
-        status: true,
+        status: 200,
         code: 200,
         message: "Login berhasil",
         data: {

@@ -59,7 +59,7 @@ export default function AdminLayout({ children }) {
             </div>
 
             {/* Middle (Desktop Nav) */}
-            <nav className="hidden lg:flex space-x-6">
+            <nav className="hidden  lg:flex space-x-6">
               {navItems.map(({ name, href, icon: Icon, key }) => (
                 <Link
                   key={key}
@@ -84,7 +84,7 @@ export default function AdminLayout({ children }) {
 
         {/* Mobile Nav Menu */}
         {mobileMenuOpen && (
-          <div className="lg:hidden bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 px-4 py-3 space-y-2">
+          <div className="lg:hidden sticky top-16 z-50 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 px-4 py-3 space-y-2">
             {navItems.map(({ name, href, icon: Icon, key }) => (
               <Link
                 key={key}
