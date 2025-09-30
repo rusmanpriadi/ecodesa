@@ -263,7 +263,9 @@ const calculateConsistencyMeasure = (matrix, weights, items, itemIdKey = 'id') =
       </div>
     );
   }
-
+if (!kriteriaData || !Array.isArray(kriteriaData) || kriteriaData.length === 0) {
+  return <p className="text-center text-gray-500">Data kriteria belum tersedia</p>
+}
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto py-8">
@@ -293,11 +295,11 @@ const calculateConsistencyMeasure = (matrix, weights, items, itemIdKey = 'id') =
                   <thead>
                     <tr className="bg-gray-100">
                       <th className="border border-gray-300 px-3 py-2 font-semibold">Kriteria</th>
-                      {kriteriaData.map(criterion => (
-                        <th key={criterion.id} className="border border-gray-300 px-3 py-2 font-semibold text-center">
-                          {criterion.kode_kriteria}
-                        </th>
-                      ))}
+                      {(kriteriaData || []).map(criterion => (
+  <th key={criterion.id} className="border border-gray-300 px-3 py-2 font-semibold text-center">
+    {criterion.kode_kriteria}
+  </th>
+))}
                       {/* <th className="border border-gray-300 px-3 py-2 font-semibold text-center">Total Baris</th> */}
                     </tr>
                   </thead>

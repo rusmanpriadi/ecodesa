@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import axios from 'axios';
 
-const SkorAkhir = ({kriteriaData , kriteriaJudgment , alternatifData , alternatifJudgmentData }) => {
+const SkorAkhir = ({kriteriaData = [], kriteriaJudgment = []}) => {
 
   const [sessions, setSessions] = useState([]);
   const [activeSession, setActiveSession] = useState(null);
@@ -62,8 +62,6 @@ const SkorAkhir = ({kriteriaData , kriteriaJudgment , alternatifData , alternati
     }
   };
 
-
-     
   const fetchAlternatives = async () => {
     try {
       const response = await fetch('/api/alternatif');
@@ -230,25 +228,22 @@ const SkorAkhir = ({kriteriaData , kriteriaJudgment , alternatifData , alternati
     saveToRiwayat(ranked, critWeights);
   };
 
-     const getNextKodeInput = async () => {
-        try {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/input-kriteria/get-last-kode-input`);
-            const lastKode = response.data.last_kode || 0;
-            return lastKode 
-        } catch (error) {
-            console.error('Error getting last kode_input:', error);
-            return 1;
-        }
-    };
-
+  const getNextKodeInput = async () => {
+    try {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/input-kriteria/get-last-kode-input`);
+      const lastKode = response.data.last_kode || 0;
+      return lastKode 
+    } catch (error) {
+      console.error('Error getting last kode_input:', error);
+      return 1;
+    }
+  };
 
   const saveToRiwayat = async (rankedResults, weights) => {
     if (!rankedResults || rankedResults.length === 0 || !activeSession) return;
 
     try {
       setSaving(true);
-
-    
 
       // Get top result
       const topResult = rankedResults[0];
@@ -257,7 +252,7 @@ const SkorAkhir = ({kriteriaData , kriteriaJudgment , alternatifData , alternati
      
       // Get next Kode Input
       const kode_input = await getNextKodeInput();
-        console.log('getNextKodeInput',kode_input);
+      console.log('getNextKodeInput', kode_input);
 
       // Save to riwayat
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/riwayat`, {
@@ -297,6 +292,9 @@ const SkorAkhir = ({kriteriaData , kriteriaJudgment , alternatifData , alternati
       </div>
     );
   }
+
+  // Add check for required data before rendering tables
+  const hasData = kriteriaData.length > 0 && alternatives.length > 0 && ranking.length > 0;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -340,144 +338,154 @@ const SkorAkhir = ({kriteriaData , kriteriaJudgment , alternatifData , alternati
           </div>
         </div>
 
-        {/* Step 3: Perhitungan Skor Akhir dan Ranking */}
-        <div className="mb-8 bg-white rounded-lg shadow-sm border border-gray-200">
-          <div className="bg-purple-600 text-white px-6 py-4 rounded-t-lg">
-            <h2 className="text-xl font-semibold flex items-center gap-2">
-              <Calculator size={20} />
-              C. Perhitungan Skor Akhir dan Ranking
-            </h2>
+        {!hasData ? (
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center">
+            <AlertCircle className="mx-auto mb-4 text-gray-400" size={48} />
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Data Belum Tersedia</h3>
+            <p className="text-gray-600">Silakan pilih session dan klik Refresh untuk memuat data perhitungan.</p>
           </div>
-          
-          <div className="p-6">
-            {/* Tabel Perhitungan Skor Final */}
-            <div className="mb-6">
-              <h3 className="text-lg font-semibold mb-4">1. Perhitungan Skor Final</h3>
-              <div className="overflow-x-auto">
-                <table className="w-full border border-gray-300">
-                  <thead>
-                    <tr className="bg-gray-100">
-                      <th className="border border-gray-300 px-3 py-2 font-semibold">Alternatif</th>
-                      {kriteriaData.map(criterion => (
-                        <th key={criterion.id} className="border border-gray-300 px-3 py-2 font-semibold text-center">
-                          K{String(criterion.id).padStart(2, '0')}<br/>
-                          <span className="text-xs font-normal">
-                            ({criteriaWeights.weights?.[criterion.id] || 0})
-                          </span>
-                        </th>
-                      ))}
-                      <th className="border border-gray-300 px-3 py-2 font-semibold text-center">Skor Final</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {alternatives.map(alternative => (
-                      <tr key={alternative.id}>
-                        <td className="border border-gray-300 px-3 py-2 font-semibold bg-gray-50">
-                          A{String(alternative.id).padStart(2, '0')}
-                        </td>
-                        {kriteriaData.map(criterion => {
-                          const altWeight = alternativeWeights[criterion.id]?.weights?.[alternative.id] || 0;
-                          const critWeight = criteriaWeights.weights?.[criterion.id] || 0;
-                          const score = (parseFloat(altWeight) * parseFloat(critWeight)).toFixed(4);
-                          return (
-                            <td key={criterion.id} className="border border-gray-300 px-3 py-2 text-center">
-                              {altWeight} × {critWeight} = {score}
-                            </td>
-                          );
-                        })}
-                        <td className="border border-gray-300 px-3 py-2 text-center font-bold bg-purple-50">
-                          {finalScores[alternative.id] || 0}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            {/* Ranking Final */}
-            <div className="mb-6">
-              <h3 className="text-lg font-semibold mb-4">2. Ranking Akhir</h3>
-              <div className="overflow-x-auto">
-                <table className="w-full border border-gray-300">
-                  <thead>
-                    <tr className="bg-gray-100">
-                      <th className="border border-gray-300 px-4 py-3 font-semibold">Ranking</th>
-                      <th className="border border-gray-300 px-4 py-3 font-semibold">Kode</th>
-                      <th className="border border-gray-300 px-4 py-3 font-semibold">Nama Alternatif</th>
-                      <th className="border border-gray-300 px-4 py-3 font-semibold text-center">Skor</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {ranking.map((alternative, index) => (
-                      <tr key={alternative.id} className={index === 0 ? 'bg-yellow-50' : ''}>
-                        <td className="border border-gray-300 px-4 py-3 text-center">
-                          <span className={`inline-flex items-center justify-center w-8 h-8 rounded-full font-bold text-white ${
-                            index === 0 ? 'bg-yellow-500' : 
-                            index === 1 ? 'bg-gray-400' : 
-                            index === 2 ? 'bg-orange-600' : 'bg-gray-300'
-                          }`}>
-                            {index + 1}
-                          </span>
-                        </td>
-                        <td className="border border-gray-300 px-4 py-3 font-semibold">
-                          {alternative.kode_alternatif}
-                        </td>
-                        <td className="border border-gray-300 px-4 py-3">
-                          {alternative.pupuk}
-                        </td>
-                        <td className="border border-gray-300 px-4 py-3 text-center font-bold">
-                          {alternative.score.toFixed(4)}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Summary */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-          <div className="bg-gray-600 text-white px-6 py-4 rounded-t-lg">
-            <h2 className="text-xl font-semibold flex items-center gap-2">
-              <FileText size={20} />
-              Ringkasan Hasil Perhitungan
-            </h2>
-          </div>
-          
-          <div className="p-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="text-center p-4 bg-yellow-50 rounded-lg border-2 border-yellow-200">
-                <div className="text-3xl mb-2">🏆</div>
-                <div className="text-lg font-semibold text-gray-900">Alternatif Terpilih</div>
-                <div className="text-xl font-bold text-yellow-600 mt-2">
-                  {`${ranking[0]?.kode_alternatif} - ${ranking[0]?.pupuk || 'N/A'}`}
-                </div>
-                <div className="text-sm text-gray-600 mt-1">
-                  Skor: {ranking[0]?.score.toFixed(4) || 'N/A'} ({(ranking[0]?.score * 100).toFixed(2)}%)
-                </div>
+        ) : (
+          <>
+            {/* Step 3: Perhitungan Skor Akhir dan Ranking */}
+            <div className="mb-8 bg-white rounded-lg shadow-sm border border-gray-200">
+              <div className="bg-purple-600 text-white px-6 py-4 rounded-t-lg">
+                <h2 className="text-xl font-semibold flex items-center gap-2">
+                  <Calculator size={20} />
+                  C. Perhitungan Skor Akhir dan Ranking
+                </h2>
               </div>
               
-              <div className="text-center p-4 bg-blue-50 rounded-lg border-2 border-blue-200">
-                <div className="text-3xl mb-2">✅</div>
-                <div className="text-lg font-semibold text-gray-900">Total Alternatif</div>
-                <div className="text-xl font-bold text-blue-600 mt-2">
-                  {alternatives.length}
+              <div className="p-6">
+                {/* Tabel Perhitungan Skor Final */}
+                <div className="mb-6">
+                  <h3 className="text-lg font-semibold mb-4">1. Perhitungan Skor Final</h3>
+                  <div className="overflow-x-auto">
+                    <table className="w-full border border-gray-300">
+                      <thead>
+                        <tr className="bg-gray-100">
+                          <th className="border border-gray-300 px-3 py-2 font-semibold">Alternatif</th>
+                          {kriteriaData.map(criterion => (
+                            <th key={criterion.id} className="border border-gray-300 px-3 py-2 font-semibold text-center">
+                              K{String(criterion.id).padStart(2, '0')}<br/>
+                              <span className="text-xs font-normal">
+                                ({criteriaWeights.weights?.[criterion.id] || 0})
+                              </span>
+                            </th>
+                          ))}
+                          <th className="border border-gray-300 px-3 py-2 font-semibold text-center">Skor Final</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {alternatives.map(alternative => (
+                          <tr key={alternative.id}>
+                            <td className="border border-gray-300 px-3 py-2 font-semibold bg-gray-50">
+                              A{String(alternative.id).padStart(2, '0')}
+                            </td>
+                            {kriteriaData.map(criterion => {
+                              const altWeight = alternativeWeights[criterion.id]?.weights?.[alternative.id] || 0;
+                              const critWeight = criteriaWeights.weights?.[criterion.id] || 0;
+                              const score = (parseFloat(altWeight) * parseFloat(critWeight)).toFixed(4);
+                              return (
+                                <td key={criterion.id} className="border border-gray-300 px-3 py-2 text-center">
+                                  {altWeight} × {critWeight} = {score}
+                                </td>
+                              );
+                            })}
+                            <td className="border border-gray-300 px-3 py-2 text-center font-bold bg-purple-50">
+                              {finalScores[alternative.id] || 0}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
-              </div>
 
-              <div className="text-center p-4 bg-green-50 rounded-lg border-2 border-green-200">
-                <div className="text-3xl mb-2">💾</div>
-                <div className="text-lg font-semibold text-gray-900">Status Penyimpanan</div>
-                <div className="text-sm text-green-600 mt-2">
-                  {saving ? 'Sedang menyimpan...' : 'Tersimpan otomatis'}
+                {/* Ranking Final */}
+                <div className="mb-6">
+                  <h3 className="text-lg font-semibold mb-4">2. Ranking Akhir</h3>
+                  <div className="overflow-x-auto">
+                    <table className="w-full border border-gray-300">
+                      <thead>
+                        <tr className="bg-gray-100">
+                          <th className="border border-gray-300 px-4 py-3 font-semibold">Ranking</th>
+                          <th className="border border-gray-300 px-4 py-3 font-semibold">Kode</th>
+                          <th className="border border-gray-300 px-4 py-3 font-semibold">Nama Alternatif</th>
+                          <th className="border border-gray-300 px-4 py-3 font-semibold text-center">Skor</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {ranking.map((alternative, index) => (
+                          <tr key={alternative.id} className={index === 0 ? 'bg-yellow-50' : ''}>
+                            <td className="border border-gray-300 px-4 py-3 text-center">
+                              <span className={`inline-flex items-center justify-center w-8 h-8 rounded-full font-bold text-white ${
+                                index === 0 ? 'bg-yellow-500' : 
+                                index === 1 ? 'bg-gray-400' : 
+                                index === 2 ? 'bg-orange-600' : 'bg-gray-300'
+                              }`}>
+                                {index + 1}
+                              </span>
+                            </td>
+                            <td className="border border-gray-300 px-4 py-3 font-semibold">
+                              {alternative.kode_alternatif}
+                            </td>
+                            <td className="border border-gray-300 px-4 py-3">
+                              {alternative.pupuk}
+                            </td>
+                            <td className="border border-gray-300 px-4 py-3 text-center font-bold">
+                              {alternative.score.toFixed(4)}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
+
+            {/* Summary */}
+            <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+              <div className="bg-gray-600 text-white px-6 py-4 rounded-t-lg">
+                <h2 className="text-xl font-semibold flex items-center gap-2">
+                  <FileText size={20} />
+                  Ringkasan Hasil Perhitungan
+                </h2>
+              </div>
+              
+              <div className="p-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div className="text-center p-4 bg-yellow-50 rounded-lg border-2 border-yellow-200">
+                    <div className="text-3xl mb-2">🏆</div>
+                    <div className="text-lg font-semibold text-gray-900">Alternatif Terpilih</div>
+                    <div className="text-xl font-bold text-yellow-600 mt-2">
+                      {`${ranking[0]?.kode_alternatif} - ${ranking[0]?.pupuk || 'N/A'}`}
+                    </div>
+                    <div className="text-sm text-gray-600 mt-1">
+                      Skor: {ranking[0]?.score.toFixed(4) || 'N/A'} ({(ranking[0]?.score * 100).toFixed(2)}%)
+                    </div>
+                  </div>
+                  
+                  <div className="text-center p-4 bg-blue-50 rounded-lg border-2 border-blue-200">
+                    <div className="text-3xl mb-2">✅</div>
+                    <div className="text-lg font-semibold text-gray-900">Total Alternatif</div>
+                    <div className="text-xl font-bold text-blue-600 mt-2">
+                      {alternatives.length}
+                    </div>
+                  </div>
+
+                  <div className="text-center p-4 bg-green-50 rounded-lg border-2 border-green-200">
+                    <div className="text-3xl mb-2">💾</div>
+                    <div className="text-lg font-semibold text-gray-900">Status Penyimpanan</div>
+                    <div className="text-sm text-green-600 mt-2">
+                      {saving ? 'Sedang menyimpan...' : 'Tersimpan otomatis'}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

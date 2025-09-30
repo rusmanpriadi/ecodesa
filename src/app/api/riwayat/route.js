@@ -41,8 +41,8 @@ GROUP BY i.kode_input
 export async function POST(req) {
     try {
         const {  hasil, persen, kode_input } = await req.json();
-        const [rows] = await pool.query("INSERT INTO riwayat ( hasil, persen, kode_input, tanggal) VALUES (?, ?, ?, NOW())", [ hasil, persen, kode_input, NOW()]);
-        return NextResponse.json({ status: true, data: { id: rows.insertId,  hasil, persen, kode_input, tanggal } });
+        const [rows] = await pool.query("INSERT INTO riwayat ( hasil, persen, kode_input, tanggal) VALUES (?, ?, ?, NOW())", [ hasil, persen, kode_input ]);
+        return NextResponse.json({ status: true, data: { id: rows.insertId,  hasil, persen, kode_input, tanggal: new Date() } });
     } catch (error) {
         return NextResponse.json({ status: false, message: error.message });
     }
