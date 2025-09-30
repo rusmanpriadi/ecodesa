@@ -96,10 +96,6 @@ const fetchSessions = async () => {
   }
 };
 
-
-
-
-
   // Build comparison matrix from judgment data
   const buildComparisonMatrix = (data) => {
     const matrix = {};
