@@ -16,8 +16,6 @@ const SkorAkhir = ({kriteriaData = [], kriteriaJudgment = []}) => {
   const [alternativeJudgments, setAlternativeJudgments] = useState([]);
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
-  const [hasSaved, setHasSaved] = useState(false);
-
   
   // Calculation results
   const [criteriaMatrix, setCriteriaMatrix] = useState({});
@@ -43,9 +41,7 @@ const SkorAkhir = ({kriteriaData = [], kriteriaJudgment = []}) => {
     if (activeSession) {
       fetchJudgmentData();
     }
-      setHasSaved(false);
   }, [activeSession]);
-  
 
   useEffect(() => {
     if (kriteriaJudgment.length > 0 && alternativeJudgments.length > 0) {
@@ -179,50 +175,58 @@ const SkorAkhir = ({kriteriaData = [], kriteriaJudgment = []}) => {
     return { CI, RI, CR, lambdaMax };
   };
 
-const calculateAHP = () => {
-  const critMatrix = buildMatrix(kriteriaJudgment, kriteriaData);
-  setCriteriaMatrix(critMatrix);
+  const calculateAHP = () => {
+    const critMatrix = buildMatrix(kriteriaJudgment, kriteriaData);
+    setCriteriaMatrix(critMatrix);
 
-  const { weights: critWeights } = calculateWeights(critMatrix, kriteriaData);
-  setCriteriaWeights({ weights: critWeights });
+    const { weights: critWeights, columnSums: critColumnSums, rowTotals: critRowTotals } = calculateWeights(critMatrix, kriteriaData);
+    setCriteriaWeights({ weights: critWeights, columnSums: critColumnSums, rowTotals: critRowTotals });
 
-  // Matriks dan skor alternatif tetap sama
-  const altMatrices = {};
-  const altWeights = {};
-  kriteriaData.forEach(criterion => {
-    const criterionJudgments = alternativeJudgments.filter(j => j.id_kriteria === criterion.id);
-    const matrix = buildMatrix(criterionJudgments, alternatives);
-    const { weights } = calculateWeights(matrix, alternatives);
-    altMatrices[criterion.id] = matrix;
-    altWeights[criterion.id] = { weights };
-  });
-  setAlternativeMatrices(altMatrices);
-  setAlternativeWeights(altWeights);
+    const critConsistency = calculateConsistency(critMatrix, critWeights, kriteriaData);
+    setCriteriaCI(critConsistency.CI);
+    setCriteriaRI(critConsistency.RI);
+    setCriteriaCR(critConsistency.CR);
 
-  const scores = {};
-  alternatives.forEach(alternative => {
-    let score = 0;
+    const altMatrices = {};
+    const altWeights = {};
+    
     kriteriaData.forEach(criterion => {
-      const altWeight = parseFloat(altWeights[criterion.id]?.weights[alternative.id] || 0);
-      const critWeight = parseFloat(critWeights[criterion.id] || 0);
-      score += altWeight * critWeight;
+      const criterionJudgments = alternativeJudgments.filter(j => j.id_kriteria === criterion.id);
+      const matrix = buildMatrix(criterionJudgments, alternatives);
+      const { weights, columnSums, rowTotals } = calculateWeights(matrix, alternatives);
+      
+      altMatrices[criterion.id] = matrix;
+      altWeights[criterion.id] = { weights, columnSums, rowTotals };
     });
-    scores[alternative.id] = score.toFixed(4);
-  });
-  setFinalScores(scores);
+    
+    setAlternativeMatrices(altMatrices);
+    setAlternativeWeights(altWeights);
 
-  const ranked = alternatives
-    .map(alt => ({ ...alt, score: parseFloat(scores[alt.id]) }))
-    .sort((a, b) => b.score - a.score);
-  setRanking(ranked);
+    const scores = {};
+    alternatives.forEach(alternative => {
+      let score = 0;
+      kriteriaData.forEach(criterion => {
+        const altWeight = parseFloat(altWeights[criterion.id]?.weights[alternative.id] || 0);
+        const critWeight = parseFloat(critWeights[criterion.id] || 0);
+        score += altWeight * critWeight;
+      });
+      scores[alternative.id] = score.toFixed(4);
+    });
+    
+    setFinalScores(scores);
 
-  // Simpan ke riwayat hanya jika belum disimpan
-  if (!hasSaved) {
+    const ranked = alternatives
+      .map(alt => ({
+        ...alt,
+        score: parseFloat(scores[alt.id])
+      }))
+      .sort((a, b) => b.score - a.score);
+    
+    setRanking(ranked);
+
+    // Auto save to riwayat after calculation
     saveToRiwayat(ranked, critWeights);
-    setHasSaved(true);
-  }
-};
-
+  };
 
   const getNextKodeInput = async () => {
     try {
@@ -248,7 +252,7 @@ const calculateAHP = () => {
      
       // Get next Kode Input
       const kode_input = await getNextKodeInput();
-      
+      console.log('getNextKodeInput', kode_input);
 
       // Save to riwayat
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/riwayat`, {

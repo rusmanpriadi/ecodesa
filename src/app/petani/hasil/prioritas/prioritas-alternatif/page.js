@@ -89,6 +89,7 @@ const PrioritasAlternatif = () => {
         `${process.env.NEXT_PUBLIC_API_URL}/api/kriteria_judgment`
       );
       const criteriaData = await criteriaRes.json();
+      console.log(criteriaData)
       setCriteriaJudgments(criteriaData.status ? criteriaData.data : []);
 
       // Fetch alternative judgments

@@ -2,6 +2,8 @@
 import { pool } from "@/lib/db";
 import { NextResponse } from "next/server";
 
+
+
 export async function GET(req) {
     try {
         const [rows] = await pool.query(`SELECT * FROM kriteria_judgment`);

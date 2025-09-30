@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 export async function GET(req) {
   try {
     const { searchParams } = new URL(req.url);
-    const session_id = searchParams.get('session_id');
+  
     const id_kriteria = searchParams.get('id_kriteria');
 
     let query = "SELECT * FROM alternatif_judgment";
@@ -12,12 +12,7 @@ export async function GET(req) {
 
     // Build WHERE clause based on provided parameters
     const conditions = [];
-    
-    if (session_id) {
-      conditions.push("session_id = ?");
-      queryParams.push(session_id);
-    }
-    
+
     if (id_kriteria) {
       conditions.push("id_kriteria = ?");
       queryParams.push(id_kriteria);
@@ -38,7 +33,7 @@ export async function GET(req) {
       message: "Data alternatif judgment",
       data: rows,
       filters: {
-        session_id: session_id,
+        
         id_kriteria: id_kriteria
       }
     });

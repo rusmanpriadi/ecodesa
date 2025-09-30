@@ -216,7 +216,7 @@ const RenderInputForm = () => {
     };
 
     return (
-        <div className="mx-auto p-16">
+        <div className="mx-auto md:p-16">
             <div className="bg-white rounded-xl shadow-lg p-8">
                 <div className="mb-8">
                     <h2 className="text-2xl font-bold text-gray-800 mb-2">Input Data Kondisi Lahan</h2>

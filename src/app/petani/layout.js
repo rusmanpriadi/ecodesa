@@ -1,21 +1,15 @@
 "use client";
 
-import { useState } from "react";
-import {
-  Leaf,
-  Home,
-  BarChart2,
-  CheckSquare,
-  Menu,
-  X,
-} from "lucide-react";
+import { useState, useEffect } from "react";
+import { Leaf, Home, BarChart2, CheckSquare, Menu, X } from "lucide-react";
 import UserDropdown from "@/components/header/UserDropdown";
 import Link from "next/link";
-import "../globals.css";
 import { Button } from "@/components/ui/button";
+import { usePathname } from "next/navigation"; // <-- import hook
 
 export default function AdminLayout({ children }) {
-  const [activeTab, setActiveTab] = useState("dashboard");
+  const pathname = usePathname(); // <-- path saat ini
+  const [activeTab, setActiveTab] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navItems = [
@@ -24,13 +18,17 @@ export default function AdminLayout({ children }) {
     { name: "Hasil", href: "/petani/hasil", icon: CheckSquare, key: "hasil" },
   ];
 
+  // Set activeTab berdasarkan path saat ini
+  useEffect(() => {
+    const current = navItems.find(item => pathname.startsWith(item.href));
+    setActiveTab(current ? current.key : "");
+  }, [pathname]);
+
   return (
     <div className="min-h-screen xl:flex">
       <div className="flex-1 transition-all duration-300 ease-in-out">
-        {/* Header */}
         <header className="sticky top-0 flex w-full bg-white border-gray-200 z-40 dark:border-gray-800 dark:bg-gray-900 lg:border-b">
           <div className="flex items-center justify-between w-full px-4 py-3 lg:px-6">
-            {/* Left: Mobile Menu Button */}
             <div className="flex items-center gap-3">
               <Button
                 variant="outline"
@@ -39,27 +37,21 @@ export default function AdminLayout({ children }) {
               >
                 {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
               </Button>
-
-              {/* Logo */}
               <div className="hidden sm:block">
-              <div className="flex items-center space-x-3 ">
-                <div className="bg-gradient-to-r from-green-600 to-emerald-600 p-2 rounded-xl">
-                  <Leaf className="h-8 w-8 text-white" />
+                <div className="flex items-center space-x-3">
+                  <div className="bg-gradient-to-r from-green-600 to-emerald-600 p-2 rounded-xl">
+                    <Leaf className="h-8 w-8 text-white" />
+                  </div>
+                  <div>
+                    <h1 className="text-xl font-bold text-gray-900 dark:text-gray-100">EcoDesa</h1>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">Desa Sidomukti</p>
+                  </div>
                 </div>
-                <div className="">
-                  <h1 className="text-xl font-bold text-gray-900 dark:text-gray-100">
-                    EcoDesa
-                  </h1>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
-                    Desa Sidomukti
-                  </p>
-                </div>
-              </div>
               </div>
             </div>
 
-            {/* Middle (Desktop Nav) */}
-            <nav className="hidden  lg:flex space-x-6">
+            {/* Desktop Nav */}
+            <nav className="hidden lg:flex space-x-6">
               {navItems.map(({ name, href, icon: Icon, key }) => (
                 <Link
                   key={key}
@@ -77,12 +69,11 @@ export default function AdminLayout({ children }) {
               ))}
             </nav>
 
-            {/* Right: User Dropdown */}
             <UserDropdown />
           </div>
         </header>
 
-        {/* Mobile Nav Menu */}
+        {/* Mobile Nav */}
         {mobileMenuOpen && (
           <div className="lg:hidden sticky top-16 z-50 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 px-4 py-3 space-y-2">
             {navItems.map(({ name, href, icon: Icon, key }) => (
@@ -106,7 +97,6 @@ export default function AdminLayout({ children }) {
           </div>
         )}
 
-        {/* Page Content */}
         <main className="mx-auto">{children}</main>
       </div>
     </div>

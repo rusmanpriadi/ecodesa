@@ -45,3 +45,68 @@ export async function POST(req) {
         });
     }
 }
+
+
+export async function DELETE(req) {
+  try {
+    const { kode_input } = await req.json();
+    console.log("DELETE Body input:", { kode_input });
+
+    if (!kode_input) {
+      return NextResponse.json({ status: false, code: 400, message: "kode_input tidak ditemukan" });
+    }
+
+    // Cek data di input_kriteria
+    const [rows] = await pool.query(
+      "SELECT kode_input FROM input_kriteria WHERE kode_input = ?",
+      [kode_input]
+    );
+    console.log("Rows found in input_kriteria:", rows.length);
+
+    if (rows.length === 0) {
+      return NextResponse.json({ status: false, code: 404, message: "Data input_kriteria tidak ditemukan" });
+    }
+
+    const deletedKodeInput = rows[0].kode_input;
+
+    // Hapus data terkait di tabel_lain
+    const [deletedRowsLain] = await pool.query(
+      "DELETE FROM riwayat WHERE kode_input = ?",
+      [kode_input]
+    );
+    // Hapus data terkait di tabel_lain
+    const [deletedRowsJudgment] = await pool.query(
+      "DELETE FROM kriteria_judgment WHERE kode_input = ?",
+      [kode_input]
+    );
+  
+
+    // Hapus data di input_kriteria
+    const [deletedRowsKriteria] = await pool.query(
+      "DELETE FROM input_kriteria WHERE kode_input = ?",
+      [kode_input]
+    );
+    console.log("Rows deleted in input_kriteria:", deletedRowsKriteria.affectedRows);
+
+    return NextResponse.json({
+      status: true,
+      code: 200,
+      message: "Data deleted successfully",
+      data: {
+        kode_input,
+        deletedKodeInput,
+        deletedRowsLain: deletedRowsLain.affectedRows,
+        deletedRowsJudgment: deletedRowsJudgment.affectedRows,
+        deletedRowsKriteria: deletedRowsKriteria.affectedRows
+      },
+    });
+  } catch (error) {
+    console.error("Error deleting data:", error);
+    return NextResponse.json({
+      status: false,
+      code: 500,
+      message: "Error deleting data",
+      error: error.message,
+    });
+  }
+}
