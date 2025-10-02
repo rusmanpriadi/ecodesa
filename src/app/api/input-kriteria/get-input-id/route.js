@@ -11,11 +11,13 @@ export async function GET(req) {
         ik.id,
         ik.kode_input,
         ik.id_user,
+        u.name AS nama_user,
         k.nama_kriteria,
         k.kode_kriteria,
         s.subkriteria as nama_subkriteria,
         ik.bobot
       FROM input_kriteria ik
+      LEFT JOIN users u ON ik.id_user = u.id
       LEFT JOIN kriteria k ON ik.kode_kriteria = k.kode_kriteria
       LEFT JOIN subkriteria s ON ik.id_subkriteria = s.id
     `;

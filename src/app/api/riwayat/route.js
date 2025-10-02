@@ -17,14 +17,21 @@ export async function GET(req) {
 
     const [rows] = await pool.query(
       `
-  SELECT u.id AS id_user, u.name AS nama,
-    i.id AS id_kodeinput, i.kode_input,
-    r.id AS id_riwayat, r.hasil, r.persen, r.tanggal
-FROM input_kriteria i
-JOIN users u ON i.id_user = u.id
-JOIN riwayat r ON i.kode_input = r.kode_input
-WHERE u.id = 4
-GROUP BY i.kode_input
+    SELECT 
+        u.id AS id_user, 
+        u.name AS nama_user,
+        i.id AS id_kodeinput, 
+        i.kode_input,
+        r.id AS id_riwayat, 
+        r.hasil, 
+        r.persen, 
+        r.tanggal
+      FROM input_kriteria i
+      JOIN users u ON i.id_user = u.id
+      JOIN riwayat r ON i.kode_input = r.kode_input
+      WHERE u.id = ?
+      GROUP BY i.kode_input
+      ORDER BY r.tanggal DESC
 
   `,
       [id_user]

@@ -28,10 +28,10 @@ const HeaderBanner = ({ toggleMenu, isMenuOpen, setIsLoginOpen }) => {
           <nav className="hidden md:flex space-x-8 flex-row items-center">
             <a href="#home" className="text-gray-700 hover:text-green-600 transition-colors font-medium">Beranda</a>
             <a href="#desa" className="text-gray-700 hover:text-green-600 transition-colors font-medium">Info Desa</a>
-            <a href="#petani" className="text-gray-700 hover:text-green-600 transition-colors font-medium">Petani</a>
+            {/* <a href="#petani" className="text-gray-700 hover:text-green-600 transition-colors font-medium">Petani</a> */}
             <a href="#pupuk" className="text-gray-700 hover:text-green-600 transition-colors font-medium">Pupuk</a>
             <a href="#galeri" className="text-gray-700 hover:text-green-600 transition-colors font-medium">Galeri</a>
-            <a href="#kontak" className="text-gray-700 hover:text-green-600 transition-colors font-medium">Kontak</a>
+            {/* <a href="#kontak" className="text-gray-700 hover:text-green-600 transition-colors font-medium">Kontak</a> */}
             <Button
               onClick={() => setIsLoginOpen(true)}
               variant={"green"}

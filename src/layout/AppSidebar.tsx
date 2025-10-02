@@ -38,7 +38,7 @@ const navItems: NavItem[] = [
   {
     icon: <HiOutlineCalculator  className="w-5 h-5"/>,
     name: "Riwayat Rekomendasi",
-    path: "#",
+    path: "/admin/riwayat-rekomendasi",
   },
   
   // {
@@ -111,24 +111,24 @@ const othersItems: NavItem[] = [
     icon: <BoxCubeIcon />,
     name: "Perbandingan",
     subItems: [
-      { name: "Perbandangan Kriteria", path: "/admin/perbandingan-kriteria", pro: false },
+      // { name: "Perbandangan Kriteria", path: "/admin/perbandingan-kriteria", pro: false },
       { name: "Perbandangan Alternatif", path: "/admin/perbandingan-alternatif", pro: false },
     ],
   },
-   {
-    icon: <BoxCubeIcon />,
-    name: "Perhitungan AHP",
-    subItems: [
-      { name: "Bobot Prioritas Kriteria", path: "/admin/prioritas-kriteria", pro: false },
-      { name: "Bobot Prioritas Alternatif", path: "/admin/prioritas-alternatif", pro: false },
-      { name: "Skor Akhir", path: "/admin/skor-akhir", pro: false },
-    ],
-  },
+  //  {
+  //   icon: <BoxCubeIcon />,
+  //   name: "Perhitungan AHP",
+  //   subItems: [
+  //     // { name: "Bobot Prioritas Kriteria", path: "/admin/prioritas-kriteria", pro: false },
+  //     { name: "Bobot Prioritas Alternatif", path: "/admin/prioritas-alternatif", pro: false },
+  //     // { name: "Skor Akhir", path: "/admin/skor-akhir", pro: false },
+  //   ],
+  // },
   {
     icon: <BoxCubeIcon />,
     name: "Landing Page",
     subItems: [
-      { name: "Jenis Pupuk", path: "#", pro: false },
+      { name: "Jenis Pupuk", path: "/admin/pupuk", pro: false },
       { name: "Galeri", path: "/admin/galeri", pro: false },
       { name: "Profile", path: "#", pro: false },
      

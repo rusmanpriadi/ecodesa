@@ -19,7 +19,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
-import { AddKriteriaModal } from "./modal/modalAddSubKriteria";
+import { AddSubKriteriaModal } from "./modal/modalAddSubKriteria";
 
 import axios from "axios";
 import { DataTablePagination } from "@/components/table/data-table-pagination";
@@ -84,7 +84,7 @@ const SubKriteriaPage = () => {
             Make changes to your account here. Click save when you're done.
           </p>
         </article>
-        <AddKriteriaModal  onSave={handleRefreshTable}
+        <AddSubKriteriaModal  onSave={handleRefreshTable}
           existingKriteria={data}
         />
       </section>
