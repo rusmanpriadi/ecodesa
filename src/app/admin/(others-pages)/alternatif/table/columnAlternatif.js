@@ -68,6 +68,7 @@ const ColumnAlternatif = ({ onSave }) => [
     header: () => <div className="text-center">Aksi</div>,
     cell: ({ row }) => {
       const posisiData = row.original;
+      
    
 
       return (

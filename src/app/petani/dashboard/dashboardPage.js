@@ -1,11 +1,36 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { Leaf, Calculator, TrendingUp, Home, Plus, FileText, ChevronRight } from 'lucide-react';
+import axios from 'axios';
 
 
 const FarmerSPKDashboard = () => {
+
+  const [alternatif, setAlternatif] = useState([]);
+  const [kriteria, setKriteria] = useState([]);
+
+  useEffect(()=> {
+    const fetchData = async () => {
+      try {
+        const [alternatifRes, kriteriaRes] = await Promise.all([
+          axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/alternatif`),
+          axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/criteria`)
+        ]);
+        setAlternatif(alternatifRes.data.data);
+        setKriteria(kriteriaRes.data.data);
+        
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    }
+
+    fetchData();
+  }, []);
+
+  const jumlahPupuk = alternatif.length;
+  const jumlahKriteria = kriteria.length;
 
   // Data untuk grafik dashboard
   const pupukData = [
@@ -31,8 +56,8 @@ return (
         <div className="bg-white rounded-xl shadow-md p-6 border-l-4 border-green-500">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600 font-medium">Total Alternatif</p>
-              <p className="text-2xl font-bold text-gray-800">4</p>
+              <p className="text-sm text-gray-600 font-medium">Total Alternatif/Pupuk</p>
+              <p className="text-2xl font-bold text-gray-800">{jumlahPupuk}</p>
             </div>
             <Leaf className="h-8 w-8 text-green-500" />
           </div>
@@ -41,7 +66,7 @@ return (
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-600 font-medium">Kriteria</p>
-              <p className="text-2xl font-bold text-gray-800">10</p>
+              <p className="text-2xl font-bold text-gray-800">{jumlahKriteria}</p>
             </div>
             <Calculator className="h-8 w-8 text-blue-500" />
           </div>
@@ -59,7 +84,7 @@ return (
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-600 font-medium">Metode SPK</p>
-              <p className="text-lg font-bold text-gray-800">TOPSIS</p>
+              <p className="text-lg font-bold text-gray-800">AHP</p>
             </div>
             <FileText className="h-8 w-8 text-purple-500" />
           </div>

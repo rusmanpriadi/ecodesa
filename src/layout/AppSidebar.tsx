@@ -20,7 +20,7 @@ import {
 import { LuListChecks } from "react-icons/lu";
 import { HiOutlineSquare3Stack3D, HiOutlineCalculator, HiOutlineScale   } from "react-icons/hi2";
 import SidebarWidget from "./SidebarWidget";
-import { Leaf } from "lucide-react";
+import { CrossIcon, HomeIcon, Leaf, Users } from "lucide-react";
 
 type NavItem = {
   name: string;
@@ -94,7 +94,7 @@ const othersItems: NavItem[] = [
   //   path: "/admin/criteria",
   // },
   {
-    icon: <BoxCubeIcon />,
+    icon: <CrossIcon />,
     name: "Kelola Kriteria",
     subItems: [
       { name: "Kriteria", path: "/admin/criteria", pro: false },
@@ -125,7 +125,7 @@ const othersItems: NavItem[] = [
   //   ],
   // },
   {
-    icon: <BoxCubeIcon />,
+    icon: <HomeIcon />,
     name: "Landing Page",
     subItems: [
       { name: "Jenis Pupuk", path: "/admin/pupuk", pro: false },
@@ -133,6 +133,11 @@ const othersItems: NavItem[] = [
       { name: "Profile", path: "#", pro: false },
      
     ],
+  },
+   {
+    icon: <Users />,
+    name: "Users",
+    path: "/admin/users",
   },
   // {
   //   icon: <PlugInIcon />,

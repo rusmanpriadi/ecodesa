@@ -1,3 +1,6 @@
+
+
+
 export function generatePageMetadata({
   title,
   description,
@@ -12,6 +15,7 @@ export function generatePageMetadata({
   const baseUrl = 'https://mywebsite.com'
   const fullUrl = url ? `${baseUrl}${url}` : baseUrl
   const ogImage = image ? `${baseUrl}${image}` : `${baseUrl}/og-default.jpg`
+  
 
   return {
     title,
@@ -19,9 +23,9 @@ export function generatePageMetadata({
     keywords: keywords.join(', '),
     authors: authors.map(author => ({ name: author })),
       icons: {
-      icon: '/logo.webp',
-      shortcut: '/logo.webp',
-      apple: '/logo.webp',
+      icon: '/icontt.png',
+      shortcut: '/icontt.png',
+      apple: '/icontt.png',
     },
     openGraph: {
       title,
@@ -29,7 +33,7 @@ export function generatePageMetadata({
       url: fullUrl,
       images: [
         {
-          url: ogImage,
+          url: '/icontt.png',
           width: 1200,
           height: 630,
           alt: title,

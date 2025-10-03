@@ -155,7 +155,7 @@ export const AddAlternatifModal = ({ onSave, existingAlternatif = [] }) => {
     if (isOpen) {
       const generateNumber = () => {
         if (!existingAlternatif || existingAlternatif.length === 0) {
-          return "01";
+          return "1";
         }
 
         const existingNumbers = existingAlternatif
@@ -174,7 +174,7 @@ export const AddAlternatifModal = ({ onSave, existingAlternatif = [] }) => {
           nextNumber++;
         }
 
-        return nextNumber.toString().padStart(2, "0");
+        return nextNumber.toString()
       };
 
       const nextNumber = generateNumber();

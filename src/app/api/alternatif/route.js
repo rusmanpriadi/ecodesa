@@ -48,17 +48,7 @@ export async function POST(req) {
       );
     }
 
-    // Validasi format kode alternatif
-    if (!/^A\d{2}$/.test(kode_alternatif)) {
-      return NextResponse.json(
-        {
-          status: false,
-          code: 400,
-          message: "Format kode alternatif tidak valid. Gunakan format A01, A02, dst.",
-        },
-        { status: 400 }
-      );
-    }
+    
 
     // Cek duplikasi kode alternatif
     const [existing] = await pool.query(

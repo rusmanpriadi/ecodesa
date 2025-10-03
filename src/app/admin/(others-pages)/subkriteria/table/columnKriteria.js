@@ -56,6 +56,7 @@ const ColumnKriteria = ({ onSave }) => [
     cell: ({ row }) => {
   
       const posisiData = row.original;
+      // console.log('posisiData', posisiData);
       return (
         <div className=" text-xs  w-[450px]">
           {posisiData.subkriteria_array

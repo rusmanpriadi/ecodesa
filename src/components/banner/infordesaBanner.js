@@ -1,4 +1,6 @@
-import React from 'react'
+"use client"
+
+import React, { useState, useEffect } from 'react'
 import { 
   MapPin, 
   Users, 
@@ -15,15 +17,38 @@ import {
   Menu,
   X
 } from 'lucide-react';
+import axios from 'axios';
 
  const InfordesaBanner = () => {
+   const [jumlahPetani, setJumlahPetani] = useState(0);
+ 
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Ambil data users
+        const userRes = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/users`
+        );
+        const users = userRes.data.data || [];
+        const petaniCount = users.filter((u) => u.level === "petani").length;
+        setJumlahPetani(petaniCount);
+
+      } catch (error) {
+        console.error("Gagal mengambil data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
       <section id="desa" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">Informasi Desa</h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Desa Makmur Jaya - Pusat Inovasi Pertanian Organik yang Berkelanjutan
+              Desa Sukamaju adalah salah satu desa yang terletak di wilayah Kabupaten Luwu Utara, Provinsi Sulawesi Selatan, Indonesia.
             </p>
           </div>
 
@@ -33,13 +58,13 @@ import {
                 <div className="grid grid-cols-2 gap-6">
                   <div className="text-center">
                     <MapPin className="h-12 w-12 text-green-600 mx-auto mb-3" />
-                    <div className="text-2xl font-bold text-gray-900">2,500 Ha</div>
+                    <div className="text-2xl font-bold text-gray-900">2438,69 Ha</div>
                     <div className="text-sm text-gray-600">Luas Wilayah</div>
                   </div>
                   <div className="text-center">
                     <Users className="h-12 w-12 text-green-600 mx-auto mb-3" />
-                    <div className="text-2xl font-bold text-gray-900">1,250</div>
-                    <div className="text-sm text-gray-600">Jumlah KK</div>
+                    <div className="text-2xl font-bold text-gray-900">{jumlahPetani}</div>
+                    <div className="text-sm text-gray-600">Jumlah Petani</div>
                   </div>
                 </div>
               </div>
@@ -47,7 +72,7 @@ import {
               <div className="space-y-4">
                 <h3 className="text-2xl font-bold text-gray-900">Profil Desa</h3>
                 <p className="text-gray-600 leading-relaxed">
-                  Desa Makmur Jaya merupakan desa percontohan dalam implementasi teknologi digital untuk mendukung pertanian organik. Dengan komitmen terhadap lingkungan dan kesejahteraan petani, desa ini telah mengembangkan sistem manajemen pupuk kompos organik yang inovatif.
+                  Desa Sukamaju merupakan desa percontohan dalam implementasi teknologi digital untuk mendukung pertanian organik. Dengan komitmen terhadap lingkungan dan kesejahteraan petani, desa ini telah mengembangkan sistem manajemen pupuk kompos organik yang inovatif.
                 </p>
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

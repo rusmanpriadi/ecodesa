@@ -21,11 +21,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { successToast } from "@/lib/toastUtils";
+import { successToast, errorToast } from "@/lib/toastUtils";
 
 export const AddSubKriteriaModal = ({ onSave }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [kriteria, setKriteria] = useState([]);
+  const [kriteriaWithSub, setKriteriaWithSub] = useState([]);
   const [formData, setFormData] = useState({
     kode_kriteria: "",
   });
@@ -36,35 +37,86 @@ export const AddSubKriteriaModal = ({ onSave }) => {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Fetch kriteria dan subkriteria yang sudah ada
   useEffect(() => {
-    const fetchKriteria = async () => {
+    const fetchData = async () => {
       try {
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/criteria`
-        );
-        setKriteria(response.data.data);
+        const [kriteriaRes, subkriteriaRes] = await Promise.all([
+          axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/criteria`),
+          axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/subkriteria`),
+        ]);
+
+        setKriteria(kriteriaRes.data.data);
+
+        // Get unique kode_kriteria yang sudah punya subkriteria
+        const usedKriteria = [
+          ...new Set(subkriteriaRes.data.data.map((sub) => sub.kode_kriteria)),
+        ];
+        setKriteriaWithSub(usedKriteria);
       } catch (error) {
-        console.error("Error fetching kriteria:", error);
+        console.error("Error fetching data:", error);
       }
     };
-    fetchKriteria();
+    fetchData();
   }, []);
 
   const validateForm = () => {
     const newErrors = {};
 
+    // Validasi kriteria dipilih
     if (!formData.kode_kriteria) {
       newErrors.kode_kriteria = "Kriteria harus dipilih";
+      setErrors(newErrors);
+      return false;
     }
 
+    // Validasi kriteria sudah punya subkriteria
+    if (kriteriaWithSub.includes(formData.kode_kriteria)) {
+      newErrors.kode_kriteria = "Kriteria ini sudah memiliki subkriteria";
+      setErrors(newErrors);
+      errorToast("Error", {
+        description: "Kriteria yang dipilih sudah memiliki subkriteria.",
+        duration: 4000,
+      });
+      return false;
+    }
+
+    // Validasi minimal 5 subkriteria
+    if (subkriteriaList.length < 5) {
+      newErrors.general = "Minimal harus ada 5 subkriteria";
+      setErrors(newErrors);
+      errorToast("Error", {
+        description: "Minimal harus ada 5 subkriteria.",
+        duration: 4000,
+      });
+      return false;
+    }
+
+    // Validasi setiap subkriteria
     subkriteriaList.forEach((item, index) => {
       if (!item.subkriteria.trim()) {
         newErrors[`subkriteria_${index}`] = "Nama subkriteria tidak boleh kosong";
       }
-      if (!item.bobot || Number(item.bobot) <= 0) {
-        newErrors[`bobot_${index}`] = "Bobot harus lebih dari 0";
+      
+      const bobotNum = Number(item.bobot);
+      if (!item.bobot || bobotNum < 1 || bobotNum > 5) {
+        newErrors[`bobot_${index}`] = "Bobot harus antara 1-5";
       }
     });
+
+    // Validasi bobot tidak boleh sama
+    const bobotValues = subkriteriaList.map((item) => Number(item.bobot));
+    const hasDuplicateBobot = bobotValues.some(
+      (bobot, index) => bobotValues.indexOf(bobot) !== index
+    );
+
+    if (hasDuplicateBobot) {
+      newErrors.general = "Bobot tidak boleh sama";
+      errorToast("Error", {
+        description: "Setiap subkriteria harus memiliki bobot yang berbeda.",
+        duration: 4000,
+      });
+    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -87,6 +139,9 @@ export const AddSubKriteriaModal = ({ onSave }) => {
     if (errors[errorKey]) {
       setErrors((prev) => ({ ...prev, [errorKey]: "" }));
     }
+    if (errors.general) {
+      setErrors((prev) => ({ ...prev, general: "" }));
+    }
   };
 
   const addSubkriteriaRow = () => {
@@ -94,7 +149,7 @@ export const AddSubKriteriaModal = ({ onSave }) => {
   };
 
   const removeSubkriteriaRow = (index) => {
-    if (subkriteriaList.length > 1) {
+    if (subkriteriaList.length > 2) {
       const newList = subkriteriaList.filter((_, i) => i !== index);
       setSubkriteriaList(newList);
     }
@@ -117,7 +172,7 @@ export const AddSubKriteriaModal = ({ onSave }) => {
 
     try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/subcriteria`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/subkriteria`,
         submitData
       );
 
@@ -128,6 +183,10 @@ export const AddSubKriteriaModal = ({ onSave }) => {
           { subkriteria: "", bobot: "" },
         ]);
         setErrors({});
+        
+        // Update kriteriaWithSub
+        setKriteriaWithSub([...kriteriaWithSub, formData.kode_kriteria]);
+        
         successToast("Success.", {
           description: "Subkriteria berhasil ditambahkan.",
           duration: 4000,
@@ -138,14 +197,40 @@ export const AddSubKriteriaModal = ({ onSave }) => {
     } catch (error) {
       console.error("Error adding subkriteria:", error);
       if (error.response?.data?.message) {
+        errorToast("Error", {
+          description: error.response.data.message,
+          duration: 4000,
+        });
         setErrors({ general: error.response.data.message });
       } else {
+        errorToast("Error", {
+          description: "Gagal menambahkan subkriteria.",
+          duration: 4000,
+        });
         setErrors({ general: "Gagal menambahkan subkriteria." });
       }
     } finally {
       setIsSubmitting(false);
     }
   };
+
+  // Reset form saat modal dibuka
+  useEffect(() => {
+    if (isOpen) {
+      setFormData({ kode_kriteria: "" });
+      setSubkriteriaList([
+        { subkriteria: "", bobot: "" },
+        { subkriteria: "", bobot: "" },
+      ]);
+      setErrors({});
+    }
+  }, [isOpen]);
+
+  // Filter kriteria yang belum punya subkriteria
+  const availableKriteria = kriteria.filter(
+    (item) => !kriteriaWithSub.includes(item.kode_kriteria)
+  );
+  console.log(kriteria);
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -187,6 +272,19 @@ export const AddSubKriteriaModal = ({ onSave }) => {
             </div>
           )}
 
+          {/* Info Box */}
+          <div className="flex items-start gap-2 p-3 bg-blue-50 border border-blue-200 rounded-md">
+            <AlertCircle className="h-4 w-4 text-blue-600 mt-0.5" />
+            <div className="text-xs text-blue-700 space-y-1">
+              <p className="font-medium">Ketentuan:</p>
+              <ul className="list-disc list-inside space-y-0.5">
+                <li>Minimal 5 subkriteria</li>
+                <li>Bobot harus antara 1-5</li>
+                <li>Setiap bobot harus berbeda (tidak boleh sama)</li>
+              </ul>
+            </div>
+          </div>
+
           {/* Select Kriteria */}
           <div className="w-full space-y-2">
             <Label>Pilih Kriteria</Label>
@@ -202,11 +300,17 @@ export const AddSubKriteriaModal = ({ onSave }) => {
                 <SelectValue placeholder="Pilih Kriteria" />
               </SelectTrigger>
               <SelectContent className="w-full">
-                {kriteria.map((item) => (
-                  <SelectItem key={item.id} value={item.kode_kriteria}>
-                    {`${item.kode_kriteria} - ${item.nama_kriteria}`}
-                  </SelectItem>
-                ))}
+                {availableKriteria.length === 0 ? (
+                  <div className="p-2 text-center text-sm text-gray-500">
+                    Semua kriteria sudah memiliki subkriteria
+                  </div>
+                ) : (
+                  availableKriteria.map((item) => (
+                    <SelectItem key={item.id} value={item.kode_kriteria}>
+                      {`${item.kode_kriteria} - ${item.nama_kriteria}`}
+                    </SelectItem>
+                  ))
+                )}
               </SelectContent>
             </Select>
             {errors.kode_kriteria && (
@@ -219,7 +323,12 @@ export const AddSubKriteriaModal = ({ onSave }) => {
 
           {/* Subkriteria List */}
           <div className="w-full space-y-2">
-            <Label>Daftar SubKriteria</Label>
+            <div className="flex items-center justify-between">
+              <Label>Daftar SubKriteria</Label>
+              <span className="text-xs text-gray-500">
+                {subkriteriaList.length} dari minimal 5
+              </span>
+            </div>
             <ul className="w-full space-y-3">
               {subkriteriaList.map((item, index) => (
                 <li key={index} className="w-full space-y-2">
@@ -252,11 +361,13 @@ export const AddSubKriteriaModal = ({ onSave }) => {
                       )}
                       <Input
                         type="number"
-                        placeholder="Bobot"
+                        placeholder="Bobot (1-5)"
                         value={item.bobot}
                         onChange={(e) =>
                           handleSubkriteriaChange(index, "bobot", e.target.value)
                         }
+                        min="1"
+                        max="5"
                         className={
                           errors[`bobot_${index}`] ? "border-red-500" : ""
                         }
@@ -268,7 +379,7 @@ export const AddSubKriteriaModal = ({ onSave }) => {
                         </p>
                       )}
                     </div>
-                    {subkriteriaList.length > 1 && (
+                    {subkriteriaList.length > 2 && (
                       <Button
                         type="button"
                         variant="ghost"
