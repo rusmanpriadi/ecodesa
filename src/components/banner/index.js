@@ -71,163 +71,135 @@ const LandingPage = () => {
       {/* <KontakBanner /> */}
 
       {/* Footer */}
-      <footer className="bg-gradient-to-br from-gray-900 to-gray-800 text-white py-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className=" gap-8">
-            {/* Company Info */}
-               <div className="grid grid-cols-5 gap-8">
-  {/* Kontak Utama */}
-  <div className="col-span-3 bg-gradient-to-br from-green-600 to-emerald-600 rounded-2xl p-8 text-white">
-    <h3 className="text-2xl font-bold mb-6">Informasi Kontak</h3>
-    <div className="space-y-6">
-      {/* Alamat */}
-      <div className="flex items-start space-x-4">
-        <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-          <MapPin className="h-6 w-6 text-green-600" />
-        </div>
-        <div>
-          <h4 className="font-semibold mb-1">Alamat Kantor Desa</h4>
-          <p>Jl. Pramuka No. 67, Desa Sukamaju, Kec. Sukamaju, Kab. Luwu Utara, Sulawesi Selatan 92963</p>
-        </div>
-      </div>
-      {/* Alamat */}
-      <div className="flex items-start space-x-4">
-        <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-          <Earth className="h-6 w-6 text-green-600" />
-        </div>
-        <div>
-          <h4 className="font-semibold mb-1">Website</h4>
-          <Link href="https://spk-pupuk.site/" target="_blank" rel="noopener noreferrer" className='underline'>EcoDesa Makmur Jaya</Link>
-        </div>
-      </div>
-      {/* Sosial Media */}
-      <div className="flex items-start space-x-4">
-        <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-          <Earth className="h-6 w-6 text-green-600" />
-        </div>
-        <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-          <FaFacebook className="h-6 w-6 text-green-600" />
-        </div>
-        <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-          <FaInstagram className="h-6 w-6 text-green-600" />
-        </div>
-        <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-          <FaYoutube className="h-6 w-6 text-green-600" />
+     {/* Footer */}
+      <footer className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white py-12 lg:py-16 relative overflow-hidden">
+        {/* Decorative Background Elements */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute top-0 left-0 w-64 h-64 bg-green-500 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-0 right-0 w-96 h-96 bg-emerald-500 rounded-full blur-3xl"></div>
         </div>
 
-       
-      </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          {/* Main Content Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 lg:gap-8 mb-8">
+            {/* Contact Info Card - Spans 3 columns on large screens */}
+            <div className="lg:col-span-3 bg-gradient-to-br from-green-600 to-emerald-600 rounded-2xl lg:rounded-3xl p-6 sm:p-8 text-white shadow-2xl transform hover:scale-[1.02] transition-all duration-300">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
+                  <MapPin className="h-5 w-5 text-white" />
+                </div>
+                <h3 className="text-xl sm:text-2xl font-bold">Informasi Kontak</h3>
+              </div>
+              
+              <div className="space-y-5">
+                {/* Address */}
+                <div className="flex items-start space-x-4 group">
+                  <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-white/30 transition-all">
+                    <MapPin className="h-6 w-6 text-white" />
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="font-semibold mb-1 text-sm sm:text-base">Alamat Kantor Desa</h4>
+                    <p className="text-white/90 text-sm leading-relaxed">Jl. Pramuka No. 67, Desa Sukamaju, Kec. Sukamaju, Kab. Luwu Utara, Sulawesi Selatan 92963</p>
+                  </div>
+                </div>
 
-   
-    </div>
-  </div>
+                {/* Website */}
+                <div className="flex items-start space-x-4 group">
+                  <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-white/30 transition-all">
+                    <Earth className="h-6 w-6 text-white" />
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="font-semibold mb-1 text-sm sm:text-base">Website</h4>
+                    <Link href="https://spk-pupuk.site/" target="_blank" rel="noopener noreferrer" 
+                      className='text-white/90 hover:text-white underline underline-offset-4 text-sm transition-colors'>
+                      EcoDesa Makmur Jaya
+                    </Link>
+                  </div>
+                </div>
 
-  {/* Kontak Tambahan / Info Lain */}
-  <div className="col-span-2 bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl p-8 text-white">
-    <h3 className="text-2xl font-bold mb-6">Informasi Lainnya</h3>
-    <div className="space-y-6">
-      {/* Bisa diisi konten tambahan */}
-      {/* <p>Kontak tambahan atau info layanan bisa ditempatkan di sini.</p> */}
-         {/* Telepon */}
-      <div className="flex items-start space-x-4">
-        <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-          <Phone className="h-6 w-6 text-green-600" />
-        </div>
-        <div>
-          <h4 className="font-semibold mb-1">Nomor Telepon</h4>
-          {/* <p>+62 21 1234 5678</p> */}
-          <p>+62 XXX XXXX XXXX(WhatsApp)</p>
-        </div>
-      </div>
+                {/* Social Media */}
+                <div className="pt-2">
+                  <h4 className="font-semibold mb-4 text-sm sm:text-base flex items-center gap-2">
+                    <span>Ikuti Kami</span>
+                  </h4>
+                  <div className="flex flex-wrap gap-3">
+                    <a href="#" className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center hover:bg-white/30 hover:scale-110 transition-all duration-300 group">
+                      <Earth className="h-6 w-6 text-white group-hover:rotate-12 transition-transform" />
+                    </a>
+                    <a href="#" className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center hover:bg-white/30 hover:scale-110 transition-all duration-300 group">
+                      <FaFacebook className="h-6 w-6 text-white group-hover:rotate-12 transition-transform" />
+                    </a>
+                    <a href="#" className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center hover:bg-white/30 hover:scale-110 transition-all duration-300 group">
+                      <FaInstagram className="h-6 w-6 text-white group-hover:rotate-12 transition-transform" />
+                    </a>
+                    <a href="#" className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center hover:bg-white/30 hover:scale-110 transition-all duration-300 group">
+                      <FaYoutube className="h-6 w-6 text-white group-hover:rotate-12 transition-transform" />
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-      {/* Email */}
-      <div className="flex items-start space-x-4">
-        <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-          <Mail className="h-6 w-6 text-green-600" />
-        </div>
-        <div>
-          <h4 className="font-semibold mb-1">Email</h4>
-          {/* <p>info@ecodesa-makmurjaya.id</p> */}
-          <p>sukamaju-lutra@yahoo.co.id</p>
-        </div>
-      </div>
+            {/* Additional Info Card - Spans 2 columns on large screens */}
+            <div className="lg:col-span-2 bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl lg:rounded-3xl p-6 sm:p-8 text-white shadow-2xl transform hover:scale-[1.02] transition-all duration-300">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
+                  <Phone className="h-5 w-5 text-white" />
+                </div>
+                <h3 className="text-xl sm:text-2xl font-bold">Hubungi Kami</h3>
+              </div>
+              
+              <div className="space-y-5">
+                {/* Phone */}
+                <div className="flex items-start space-x-4 group">
+                  <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-white/30 transition-all">
+                    <Phone className="h-6 w-6 text-white" />
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="font-semibold mb-1 text-sm sm:text-base">Nomor Telepon</h4>
+                    <p className="text-white/90 text-sm">+62 XXX XXXX XXXX</p>
+                    <p className="text-white/75 text-xs mt-1">(WhatsApp)</p>
+                  </div>
+                </div>
 
-      {/* Jam Operasinal */}
-      <div className="flex items-start space-x-4">
-        <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-          <Calendar className="h-6 w-6 text-green-600" />
-        </div>
-        <div>
-          <h4 className="font-semibold mb-1">Jam Operasional</h4>
-          <p>Senin - Jumat: 08:00 - 16:00 WIB</p>
-          {/* <p>Sabtu: 08:00 - 12:00 WIB</p> */}
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+                {/* Email */}
+                <div className="flex items-start space-x-4 group">
+                  <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-white/30 transition-all">
+                    <Mail className="h-6 w-6 text-white" />
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="font-semibold mb-1 text-sm sm:text-base">Email</h4>
+                    <p className="text-white/90 text-sm break-all">sukamaju-lutra@yahoo.co.id</p>
+                  </div>
+                </div>
 
-
-            {/* Quick Links */}
-            {/* <div>
-              <h4 className="text-lg font-semibold mb-6">Tautan Cepat</h4>
-              <ul className="space-y-3">
-                <li><a href="#home" className="text-gray-300 hover:text-green-400 transition-colors">Beranda</a></li>
-                <li><a href="#desa" className="text-gray-300 hover:text-green-400 transition-colors">Info Desa</a></li>
-                <li><a href="#petani" className="text-gray-300 hover:text-green-400 transition-colors">Data Petani</a></li>
-                <li><a href="#pupuk" className="text-gray-300 hover:text-green-400 transition-colors">Katalog Pupuk</a></li>
-                <li><a href="#galeri" className="text-gray-300 hover:text-green-400 transition-colors">Galeri</a></li>
-                <li><a href="#kontak" className="text-gray-300 hover:text-green-400 transition-colors">Kontak</a></li>
-              </ul>
-            </div> */}
-
-            {/* Services */}
-            {/* <div>
-              <h4 className="text-lg font-semibold mb-6">Layanan</h4>
-              <ul className="space-y-3">
-                <li><span className="text-gray-300">Konsultasi Pertanian</span></li>
-                <li><span className="text-gray-300">Distribusi Pupuk</span></li>
-                <li><span className="text-gray-300">Pelatihan Digital</span></li>
-                <li><span className="text-gray-300">Monitoring Kualitas</span></li>
-                <li><span className="text-gray-300">Sertifikasi Organik</span></li>
-                <li><span className="text-gray-300">Dukungan Teknis</span></li>
-              </ul>
-            </div> */}
+                {/* Operating Hours */}
+                <div className="flex items-start space-x-4 group">
+                  <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-white/30 transition-all">
+                    <Calendar className="h-6 w-6 text-white" />
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="font-semibold mb-1 text-sm sm:text-base">Jam Operasional</h4>
+                    <p className="text-white/90 text-sm">Senin - Jumat</p>
+                    <p className="text-white/75 text-xs mt-1">08:00 - 16:00 WIB</p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
-          {/* Newsletter */}
-          {/* <div className="border-t border-gray-700 pt-12 mb-8">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-              <div>
-                <h4 className="text-xl font-semibold mb-2">Berlangganan Newsletter</h4>
-                <p className="text-gray-400">Dapatkan info terbaru tentang pertanian organik dan inovasi pupuk kompos</p>
+          {/* Bottom Bar */}
+          <div className="border-t border-white/10 pt-6 mt-6">
+            <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-gray-400">
+              <div className="flex items-center gap-2">
+                <Leaf className="h-4 w-4 text-green-400" />
+                <span>© 2025 EcoDesa Makmur Jaya</span>
               </div>
-              <div className="flex flex-col sm:flex-row gap-3">
-                <input
-                  type="email"
-                  placeholder="Masukkan email Anda"
-                  className="flex-1 px-4 py-3 rounded-xl bg-gray-700 border border-gray-600 text-white placeholder-gray-400 focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                />
-                <button className="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg transition-all duration-300">
-                  Berlangganan
-                </button>
+              <div className="text-center sm:text-right">
+                <span>Desa Sukamaju, Luwu Utara</span>
               </div>
             </div>
-          </div> */}
-
-          {/* Copyright */}
-          {/* <div className="border-t border-gray-700 pt-8">
-            <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-              <div className="text-gray-400 text-sm">
-                © 2024 EcoDesa - Desa Makmur Jaya. Hak Cipta Dilindungi.
-              </div>
-              <div className="flex space-x-6 text-sm text-gray-400">
-                <a href="#" className="hover:text-green-400 transition-colors">Kebijakan Privasi</a>
-                <a href="#" className="hover:text-green-400 transition-colors">Syarat & Ketentuan</a>
-                <a href="#" className="hover:text-green-400 transition-colors">Bantuan</a>
-              </div>
-            </div>
-          </div> */}
+          </div>
         </div>
       </footer>
 

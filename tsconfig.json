@@ -22,6 +22,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/components/header/UserDropdown.js", "src/app/petani/layout.js", "src/app/admin/profile/page.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/components/header/UserDropdown.js", "src/app/petani/layout.js", "src/app/admin/profile/page.js", "src/app/admin/(others-pages)/dashboard/page.js", "src/app/admin/(ui-elements)/images/page.js"],
   "exclude": ["node_modules"]
 }
