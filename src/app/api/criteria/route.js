@@ -13,14 +13,14 @@ export async function GET(req) {
 
 export async function POST(req) {
   try {
-    const { kode_kriteria, nama_kriteria, atribut, bobot, deskripsi } = await req.json();
+    const { kode_kriteria, nama_kriteria, atribut, deskripsi } = await req.json();
 
     // Validasi input
-    if (!kode_kriteria || !nama_kriteria || !atribut || bobot === undefined) {
+    if (!kode_kriteria || !nama_kriteria || !atribut === undefined) {
       return NextResponse.json({
         status: false,
         code: 400,
-        message: "Kode kriteria, nama kriteria, atribut, dan bobot harus diisi",
+        message: "Kode kriteria, nama kriteria, atribut harus diisi",
       }, { status: 400 });
     }
 
@@ -33,15 +33,7 @@ export async function POST(req) {
       }, { status: 400 });
     }
 
-    // Validasi bobot
-    const bobotFloat = parseFloat(bobot);
-    if (isNaN(bobotFloat) || bobotFloat < 0 || bobotFloat > 1) {
-      return NextResponse.json({
-        status: false,
-        code: 400,
-        message: "Bobot harus berupa angka antara 0 dan 1",
-      }, { status: 400 });
-    }
+   
 
     // Validasi atribut
     if (!['cost', 'benefit'].includes(atribut.toLowerCase())) {
@@ -82,8 +74,8 @@ export async function POST(req) {
 
     // Insert data
     const [result] = await pool.query(
-      "INSERT INTO kriteria (kode_kriteria, nama_kriteria, atribut, bobot, deskripsi) VALUES (?, ?, ?, ?, ?)",
-      [kode_kriteria, nama_kriteria, atribut.toLowerCase(), bobotFloat, deskripsi || ""]
+      "INSERT INTO kriteria (kode_kriteria, nama_kriteria, atribut, deskripsi) VALUES (?, ?, ?, ?)",
+      [kode_kriteria, nama_kriteria, atribut.toLowerCase(), deskripsi || ""]
     );
 
     // Return response dengan data lengkap
@@ -92,7 +84,7 @@ export async function POST(req) {
       kode_kriteria,
       nama_kriteria,
       atribut: atribut.toLowerCase(),
-      bobot: bobotFloat,
+   
       deskripsi: deskripsi || ""
     };
 

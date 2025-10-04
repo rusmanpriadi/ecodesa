@@ -65,18 +65,18 @@ const ColumnKriteria = ({ onSave }) => [
     },
   },
   
-  {
-    accessorKey: "bobot",
-    header: () => <div className="">Bobot</div>,
+  // {
+  //   accessorKey: "bobot",
+  //   header: () => <div className="">Bobot</div>,
 
-    cell: ({ row }) => {
-      return (
-        <div className=" text-xs w-full max-w-[650px]">
-          {row.getValue("bobot")}
-        </div>
-      );
-    },
-  },
+  //   cell: ({ row }) => {
+  //     return (
+  //       <div className=" text-xs w-full max-w-[650px]">
+  //         {row.getValue("bobot")}
+  //       </div>
+  //     );
+  //   },
+  // },
   {
     accessorKey: "deskripsi",
     header: () => <div className="">Deskripsi</div>,

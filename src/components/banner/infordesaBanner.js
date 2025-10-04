@@ -107,7 +107,7 @@ import axios from 'axios';
                       </div>
                       <div>
                         <div className="font-semibold text-gray-900">Kepala Desa</div>
-                        <div className="text-sm text-gray-600">Budi Santoso, S.P.</div>
+                        <div className="text-sm text-gray-600">Sumirat, S.P.</div>
                       </div>
                     </div>
                     <div className="flex items-center space-x-4">
@@ -116,7 +116,7 @@ import axios from 'axios';
                       </div>
                       <div>
                         <div className="font-semibold text-gray-900">Kepala Seksi Pertanian</div>
-                        <div className="text-sm text-gray-600">Siti Aminah, S.P.</div>
+                        <div className="text-sm text-gray-600">Widhi Pranoto Projo, S. Pt.</div>
                       </div>
                     </div>
                     <div className="flex items-center space-x-4">
@@ -124,8 +124,8 @@ import axios from 'axios';
                         <TrendingUp className="h-6 w-6 text-green-600" />
                       </div>
                       <div>
-                        <div className="font-semibold text-gray-900">Koordinator IT</div>
-                        <div className="text-sm text-gray-600">Ahmad Wijaya, S.Kom.</div>
+                        <div className="font-semibold text-gray-900">Koordinator BPP kec. Bone Bone</div>
+                        <div className="text-sm text-gray-600">Sem Marannu, SP.</div>
                       </div>
                     </div>
                   </div>

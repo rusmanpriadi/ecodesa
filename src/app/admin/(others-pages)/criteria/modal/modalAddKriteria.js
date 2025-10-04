@@ -32,7 +32,7 @@ export const AddKriteriaModal = ({ onSave, existingKriteria = [] }) => {
     kode_kriteria: "",
     nama_kriteria: "",
     atribut: "",
-    bobot: 0,
+    
     deskripsi: "",
   });
   const [errors, setErrors] = useState({});
@@ -75,9 +75,6 @@ export const AddKriteriaModal = ({ onSave, existingKriteria = [] }) => {
       newErrors.atribut = "Atribut harus dipilih.";
     }
 
-    if (!formData.bobot || formData.bobot <= 0) {
-      newErrors.bobot = "Bobot harus lebih dari 0.";
-    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -115,7 +112,7 @@ export const AddKriteriaModal = ({ onSave, existingKriteria = [] }) => {
       kode_kriteria,
       nama_kriteria: formData.nama_kriteria,
       atribut: formData.atribut,
-      bobot: formData.bobot,
+    
       deskripsi: formData.deskripsi,
     };
 
@@ -132,7 +129,7 @@ export const AddKriteriaModal = ({ onSave, existingKriteria = [] }) => {
           kode_number: nextNumber,
           nama_kriteria: "",
           atribut: "",
-          bobot: 0,
+         
           deskripsi: "",
         });
         setErrors({});
@@ -196,7 +193,7 @@ export const AddKriteriaModal = ({ onSave, existingKriteria = [] }) => {
         kode_number: nextNumber,
         nama_kriteria: "",
         atribut: "",
-        bobot: 0,
+       
         deskripsi: "",
       });
       setErrors({});
@@ -324,28 +321,7 @@ export const AddKriteriaModal = ({ onSave, existingKriteria = [] }) => {
             </div>
           </div>
 
-          {/* Bobot */}
-          <div className="grid w-full items-center gap-3 mt-3">
-            <Label htmlFor="bobot">Bobot</Label>
-            <div className="relative">
-              <Input
-                type="number"
-                id="bobot"
-                value={formData.bobot}
-                onChange={handleInputChange}
-                placeholder="Masukkan bobot (0-1)"
-                step="0.01"
-                min="0"
-                max="1"
-                />
-              {errors.bobot && (
-                <div className="flex items-center text-red-600 text-xs mt-1">
-                  <AlertCircle className="h-3 w-3 mr-1" />
-                  {errors.bobot}
-                </div>
-              )}
-            </div>
-          </div>
+        
 
             </div>
           {/* Deskripsi */}

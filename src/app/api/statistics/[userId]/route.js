@@ -23,7 +23,7 @@ export async function GET(req, context) {
     const [stats] = await pool.query(
       `SELECT 
         r.hasil,
-        COUNT(DISTINCT r.id) as count,
+        COUNT(DISTINCT r.kode_input) as count,
         ROUND(AVG(r.persen), 2) as avg_persen,
         MAX(r.tanggal) as last_recommendation
       FROM riwayat r

@@ -225,7 +225,7 @@ const SkorAkhir = ({kriteriaData = [], kriteriaJudgment = []}) => {
     setRanking(ranked);
 
     // Auto save to riwayat after calculation
-    saveToRiwayat(ranked, critWeights);
+    // saveToRiwayat(ranked, critWeights);
   };
 
   const getNextKodeInput = async () => {
@@ -239,48 +239,48 @@ const SkorAkhir = ({kriteriaData = [], kriteriaJudgment = []}) => {
     }
   };
 
-  const saveToRiwayat = async (rankedResults, weights) => {
-    if (!rankedResults || rankedResults.length === 0 || !activeSession) return;
+  // const saveToRiwayat = async (rankedResults, weights) => {
+  //   if (!rankedResults || rankedResults.length === 0 || !activeSession) return;
 
-    try {
-      setSaving(true);
+  //   try {
+  //     setSaving(true);
 
-      // Get top result
-      const topResult = rankedResults[0];
-      const topScore = topResult.score;
-      const topPercentage = (topScore * 100).toFixed(2);
+  //     // Get top result
+  //     const topResult = rankedResults[0];
+  //     const topScore = topResult.score;
+  //     const topPercentage = (topScore * 100).toFixed(2);
      
-      // Get next Kode Input
-      const kode_input = await getNextKodeInput();
-      console.log('getNextKodeInput', kode_input);
+  //     // Get next Kode Input
+  //     const kode_input = await getNextKodeInput();
+  //     console.log('getNextKodeInput', kode_input);
 
-      // Save to riwayat
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/riwayat`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          hasil: topResult.pupuk,
-          persen: parseFloat(topPercentage),
-          kode_input
-        })
-      });
+  //     // Save to riwayat
+  //     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/riwayat`, {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({
+  //         hasil: topResult.pupuk,
+  //         persen: parseFloat(topPercentage),
+  //         kode_input
+  //       })
+  //     });
 
-      const result = await response.json();
+  //     const result = await response.json();
       
-      if (result.status) {
-        console.log('Hasil berhasil disimpan ke riwayat:', result.data);
-      } else {
-        console.error('Gagal menyimpan ke riwayat:', result.message);
-      }
+  //     if (result.status) {
+  //       console.log('Hasil berhasil disimpan ke riwayat:', result.data);
+  //     } else {
+  //       console.error('Gagal menyimpan ke riwayat:', result.message);
+  //     }
 
-    } catch (error) {
-      console.error('Error saving to riwayat:', error);
-    } finally {
-      setSaving(false);
-    }
-  };
+  //   } catch (error) {
+  //     console.error('Error saving to riwayat:', error);
+  //   } finally {
+  //     setSaving(false);
+  //   }
+  // };
 
   if (loading) {
     return (

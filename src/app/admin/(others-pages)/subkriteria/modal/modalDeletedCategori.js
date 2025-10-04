@@ -27,11 +27,11 @@ export default function ModalDeletedCategori({ onSave, criteriaData }) {
     try {
       setLoading(true);
       await axios.delete(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/criteria/${criteriaData.id}`
+        `${process.env.NEXT_PUBLIC_API_URL}/api/subkriteria/${criteriaData.id}`
       );
       onSave(); // Call the parent component's refresh function
       infoToast("Info.", {
-        description: "Categori berhasil dihapus",
+        description: "Subkriteria berhasil dihapus",
         duration: 4000,
       })
       setIsOpen(false); // Close the modal
@@ -57,7 +57,7 @@ export default function ModalDeletedCategori({ onSave, criteriaData }) {
         <DialogHeader>
           <DialogTitle>Delete Kriteria</DialogTitle>
         </DialogHeader>
-        <p className="text-sm">Apakah Anda yakin ingin menghapus kriteria ini?</p>
+        <p className="text-sm">Apakah Anda yakin ingin menghapus Subkriteria ini?</p>
         <DialogFooter>
           <Button variant="secondary" onClick={() => setIsOpen(false)}>
             Cancel
