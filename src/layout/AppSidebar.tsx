@@ -128,9 +128,9 @@ const othersItems: NavItem[] = [
     icon: <HomeIcon />,
     name: "Landing Page",
     subItems: [
-      { name: "Jenis Pupuk", path: "/admin/pupuk", pro: false },
+      // { name: "Jenis Pupuk", path: "/admin/pupuk", pro: false },
       { name: "Galeri", path: "/admin/galeri", pro: false },
-      { name: "Profile", path: "#", pro: false },
+      // { name: "Profile", path: "#", pro: false },
      
     ],
   },

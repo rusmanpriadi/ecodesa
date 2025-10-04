@@ -272,12 +272,12 @@ const RenderInputForm = () => {
                     </button>
                 </div>
 
-                <div className="mt-6 p-4 bg-gray-100 rounded-lg">
+                {/* <div className="mt-6 p-4 bg-gray-100 rounded-lg">
                     <h3 className="text-sm font-medium text-gray-700 mb-2">Data Form (Debug):</h3>
                     <pre className="text-xs text-gray-600">
                         {JSON.stringify(formData, null, 2)}
                     </pre>
-                </div>
+                </div> */}
             </div>
 
             {showResults && calculationResults && (

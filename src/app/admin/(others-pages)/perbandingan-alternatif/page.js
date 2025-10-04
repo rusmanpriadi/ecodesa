@@ -401,7 +401,7 @@ const AHPAlternativeComparison = () => {
               <p className="text-gray-600">Matriks Perbandingan Berpasangan - Metode AHP</p>
             </div>
             <div className="flex items-center gap-3">
-              <Select value={activeSession?.toString()} onValueChange={(val) => setActiveSession(Number(val))}>
+              {/* <Select value={activeSession?.toString()} onValueChange={(val) => setActiveSession(Number(val))}>
                 <SelectTrigger className="w-[200px]">
                   <SelectValue placeholder="Pilih Session" />
                 </SelectTrigger>
@@ -412,7 +412,7 @@ const AHPAlternativeComparison = () => {
                     </SelectItem>
                   ))}
                 </SelectContent>
-              </Select>
+              </Select> */}
 
               <Button
                 onClick={() => setShowScaleModal(true)}

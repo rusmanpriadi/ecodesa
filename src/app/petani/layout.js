@@ -14,7 +14,7 @@ export default function AdminLayout({ children }) {
 
   const navItems = [
     { name: "Dashboard", href: "/petani/dashboard", icon: Home, key: "dashboard" },
-    { name: "Nilai", href: "/petani/nilai", icon: BarChart2, key: "nilai" },
+    { name: "Rekomendasi", href: "/petani/nilai", icon: BarChart2, key: "nilai" },
     { name: "Hasil", href: "/petani/hasil", icon: CheckSquare, key: "hasil" },
   ];
 

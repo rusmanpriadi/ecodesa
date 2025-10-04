@@ -94,10 +94,10 @@ const ColumnKriteria = ({ onSave }) => [
       return (
         <div className="w-full flex space-x-2 items-center justify-center">
           <ModalDeletedCategori onSave={onSave} criteriaData={posisiData} />
-          <EditKriteriaModal
+          {/* <EditKriteriaModal
           criteriaData={posisiData}
             onSave={onSave}
-          />
+          /> */}
         </div>
       );
     },

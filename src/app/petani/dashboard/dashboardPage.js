@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { Leaf, Calculator, TrendingUp, Home, Plus, FileText, ChevronRight } from 'lucide-react';
 import axios from 'axios';
-
+import RecommendationDashboard from './pie';
 
 const FarmerSPKDashboard = () => {
 
@@ -52,7 +52,7 @@ return (
 
     <div className="space-y-6 p-10">
       {/* Header Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="bg-white rounded-xl shadow-md p-6 border-l-4 border-green-500">
           <div className="flex items-center justify-between">
             <div>
@@ -71,7 +71,7 @@ return (
             <Calculator className="h-8 w-8 text-blue-500" />
           </div>
         </div>
-        <div className="bg-white rounded-xl shadow-md p-6 border-l-4 border-yellow-500">
+        {/* <div className="bg-white rounded-xl shadow-md p-6 border-l-4 border-yellow-500">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-600 font-medium">Bobot Tertinggi</p>
@@ -79,7 +79,7 @@ return (
             </div>
             <TrendingUp className="h-8 w-8 text-yellow-500" />
           </div>
-        </div>
+        </div> */}
         <div className="bg-white rounded-xl shadow-md p-6 border-l-4 border-purple-500">
           <div className="flex items-center justify-between">
             <div>
@@ -92,9 +92,9 @@ return (
       </div>
 
       {/* Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-1 gap-6">
         {/* Bar Chart */}
-        <div className="bg-white rounded-xl shadow-md p-6">
+        {/* <div className="bg-white rounded-xl shadow-md p-6">
           <h3 className="text-lg font-semibold text-gray-800 mb-4">Kandungan Nutrisi Pupuk Organik</h3>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={pupukData}>
@@ -107,12 +107,12 @@ return (
               <Bar dataKey="kalium" fill="#f59e0b" name="Kalium (%)" />
             </BarChart>
           </ResponsiveContainer>
-        </div>
+        </div> */}
 
         {/* Pie Chart */}
-        <div className="bg-white rounded-xl shadow-md p-6">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">Distribusi Penggunaan Pupuk</h3>
-          <ResponsiveContainer width="100%" height={300}>
+        <div className="bg-white rounded-xl shadow-md ">
+          <h3 className="text-lg font-semibold text-gray-800 p-6 mb-4">Persentasi Hasil Rekomendasi</h3>
+          {/* <ResponsiveContainer width="100%" height={300}>
             <PieChart>
               <Pie
                 data={pieData}
@@ -128,7 +128,8 @@ return (
               </Pie>
               <Tooltip />
             </PieChart>
-          </ResponsiveContainer>
+          </ResponsiveContainer> */}
+          <RecommendationDashboard />
         </div>
       </div>
 
@@ -143,7 +144,7 @@ return (
         <div className="bg-gradient-to-r from-blue-50 to-blue-100 rounded-xl p-6 border border-blue-200">
           <h3 className="text-lg font-semibold text-blue-800 mb-3">Cara Penggunaan</h3>
           <p className="text-blue-700 text-sm leading-relaxed">
-            Masukkan data kondisi lahan Anda pada halaman Input Data, lalu sistem akan memberikan rekomendasi pupuk terbaik dengan perhitungan metode TOPSIS.
+            Masukkan data kondisi lahan Anda pada halaman Input Data, lalu sistem akan memberikan rekomendasi pupuk terbaik dengan perhitungan metode AHP.
           </p>
         </div>
       </div>
